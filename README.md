@@ -1,5 +1,8 @@
 # Relative Time Converter
 
+![NPM Version](https://img.shields.io/npm/v/relative-time-converter)
+![License](https://img.shields.io/npm/l/relative-time-converter)
+
 **relative-time-converter** is a lightweight utility that converts absolute dates or timestamps into human-friendly, relative time phrases like "2 hours ago" or "in 3 days." Perfect for improving date displays in apps, websites, or dashboards.
 
 ## Features

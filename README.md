@@ -4,10 +4,10 @@
 
 ## Features
 
-- Convert relative time strings into Date objects.
-- Parse time durations from strings.
-- Support for multiple time units (seconds, minutes, hours, days, weeks, months, years).
-- Lightweight and easy to use.
+- Convert absolute dates into relative time phrases.
+- Get the difference between two dates in years, months, days, hours, minutes, and seconds.
+- Display relative time strings for past and future dates.
+- Error handling for invalid date objects.
 
 ## Installation
 
@@ -24,50 +24,49 @@ Here's a basic example of how to use the Relative Time Converter:
 ```javascript
 import { RelativeTimeConverter } from 'relative-time-converter';
 
-const rtc = new RelativeTimeConverter();
+const converter = new RelativeTimeConverter();
 
-// Convert a relative time string to a Date object
-const date = rtc.convert('2 days ago');
-console.log(date); // Outputs the Date object for 2 days ago
+try {
+    const pastDate = new Date('2023-10-01T10:00:00');
+    const futureDate = new Date('2025-10-01T10:00:00');
+    const invalidDate = 'invalid date string';
 
-// Convert a relative time string to milliseconds
-const milliseconds = rtc.toMilliseconds('3 hours ago');
-console.log(milliseconds); // Outputs the milliseconds for 3 hours ago
+    const pastResult = converter.convertToRelativeTime(pastDate);
+    console.log(pastResult);
+    // Sample output: 
+    // {
+    //   relativeTime: "1 year 1 month 3 days ago",
+    //   years: 1,
+    //   months: 1,
+    //   days: 3,
+    //   hours: 0,
+    //   minutes: 0,
+    //   seconds: 0
+    // }
 
-// Get the relative time from a Date object
-const relativeTime = rtc.fromDate(new Date(Date.now() - 1000 * 60 * 60 * 3)); // 3 hours ago
-console.log(relativeTime); // Outputs: "3 hours ago"
+    const futureResult = converter.convertToRelativeTime(futureDate);
+    console.log(futureResult);
+    // Sample output: 
+    // {
+    //   relativeTime: "in 1 year 1 month",
+    //   years: 1,
+    //   months: 1,
+    //   days: 0,
+    //   hours: 0,
+    //   minutes: 0,
+    //   seconds: 0
+    // }
+} catch (error) {
+    console.error(error.message);
+}
+
 ```
 
-## API
+## Method
 
-### `convert(relativeTime: string): Date`
+### `convertToRelativeTime(date: Date): RelativeTimeResult`
 
-Converts a relative time string into a Date object.
-
-**Parameters:**
-
-- `relativeTime`: A string representing the relative time (e.g., "2 days ago", "in 5 minutes").
-
-**Returns:**
-
-- A Date object representing the calculated time.
-
-### `toMilliseconds(relativeTime: string): number`
-
-Converts a relative time string into milliseconds.
-
-**Parameters:**
-
-- `relativeTime`: A string representing the relative time (e.g., "1 hour ago").
-
-**Returns:**
-
-- The equivalent milliseconds as a number.
-
-### `fromDate(date: Date): string`
-
-Converts a Date object into a relative time string.
+Converts a Date object into a relative time object.
 
 **Parameters:**
 
@@ -75,7 +74,63 @@ Converts a Date object into a relative time string.
 
 **Returns:**
 
-- A string representing the relative time (e.g., "3 hours ago").
+- A JSON object containing the relative time string and the difference between the input date and the current date in years, months, days, hours, minutes, and seconds or throws an error if the input is not a valid Date object.
+
+#### Example Responses
+
+**Example For a Past Date:**
+
+```json
+{
+    "relativeTime": "1 year 3 months 5 days ago",
+        "years": 1,
+        "months": 3,
+        "days": 5,
+        "hours": 0,
+        "minutes": 0,
+        "seconds": 0
+}
+```
+
+**Example For a Future Date:**
+
+```json
+{
+  "relativeTime": "in 2 years 5 months 3 days",
+  "years": 2,
+  "months": 5,
+  "days": 3,
+  "hours": 0,
+  "minutes": 0,
+  "seconds": 0
+}
+```
+
+***Example For Now:***
+
+```json
+{
+  "relativeTime": "Just Now!",
+  "years": 0,
+  "months": 0,
+  "days": 0,
+  "hours": 0,
+  "minutes": 0,
+  "seconds": 0
+}
+```
+
+#### Error Handling
+
+If the input is not a valid Date object, the method will throw an error.
+
+```javascript
+try {
+    converter.convertToRelativeTime("invalid date string");
+} catch (error) {
+    console.error(error.message); // Output: "Invalid date object!"
+}
+```
 
 ## Setup on Your Local Machine
 
@@ -127,7 +182,7 @@ This project is licensed under the [ISC License](LICENSE).
 
 ## About
 
-This library was created to help developers easily convert relative time strings into human-readable formats. If you have any questions or suggestions, feel free to reach out!
+This library was created to help developers display human-friendly relative time phrases in their applications. If you have any questions or suggestions, feel free to reach out!
 
 ## Sponsoring
 
@@ -144,4 +199,3 @@ Thank you for your support!
 
 [github-sponsors-url]: https://github.com/sponsors/evrentan
 [buy-me-a-coffee-url]: https://www.buymeacoffee.com/evrentan
-
